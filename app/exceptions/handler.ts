@@ -12,10 +12,21 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    * The method is used for handling errors and returning
    * response to the client
    */
-  async handle(error: unknown, ctx: HttpContext) {
-    return super.handle(error, ctx)
+  public async handle(error: this, { response }): Promise<void> {
+    if (error?.status === 404) {
+      return response.status(404).send({
+        message: 'Resource not found',
+      })
+    }
+    if (error?.status === 401) {
+      return response.status(401).send({
+        message: 'Not enough permissions',
+      })
+    }
+    return response.status(error.status || 500).send({
+      message: 'Something went wrong. Internal server error.',
+    })
   }
-
   /**
    * The method is used to report error to the logging service or
    * the third party error monitoring service.

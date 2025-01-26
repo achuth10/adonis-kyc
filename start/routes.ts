@@ -30,6 +30,7 @@ router.get('/', async () => {
 // router.post('users/:id/tokens', [UsersController, 'issueToken'])
 
 router.post('users/login', [UsersController, 'login'])
+router.post('users/register', [UsersController, 'register'])
 
 router.resource('kyc', KycController).use(
   '*',

@@ -18,7 +18,7 @@ export default class UsersController {
   /**
    * Handle form submission to create a new user
    */
-  async store({ request }: HttpContext) {
+  async register({ request }: HttpContext) {
     return this.usersService.createUser(request.body())
   }
 
