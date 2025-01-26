@@ -63,4 +63,16 @@ export default class KycService {
     const allUsersCount = await db.rawQuery('SELECT COUNT(*) AS total FROM users')
     return { totalByStatus, allUsersCount: allUsersCount[0] }
   }
+
+  async getAll({ request }: HttpContext) {
+    // Should actually be done with a cursor,
+    // Due to time contraint use limit/offset
+    const { pageSize = '10', pageNumber = '1' } = request.all()
+    const parsedSize = Number.parseInt(pageSize)
+    const parsedPage = Number.parseInt(pageNumber)
+    const offset = (parsedPage - 1) * parsedSize
+
+    const results = await db.rawQuery(`SELECT * FROM kycs LIMIT ${parsedSize} OFFSET ${offset}`)
+    return results[0]
+  }
 }

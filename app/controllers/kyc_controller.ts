@@ -6,13 +6,15 @@ import { HttpContext } from '@adonisjs/core/http'
 export default class KycController {
   constructor(private readonly kycService: KycService) {}
 
-  async index(context: HttpContext) {
+  async dashboard(context: HttpContext) {
     return this.kycService.getDashboard(context)
   }
   async store(context: HttpContext) {
     return this.kycService.createKyc(context)
   }
-  async show({ params }: HttpContext) {}
+  async index(context: HttpContext) {
+    return this.kycService.getAll(context)
+  }
   async update({ params, request }: HttpContext) {}
   async destroy({ params }: HttpContext) {}
 

@@ -38,6 +38,12 @@ router.resource('kyc', KycController).use(
   })
 )
 
+router.post('kyc/dashboard', [KycController, 'dashboard']).use(
+  middleware.auth({
+    guards: ['api'],
+  })
+)
+
 router.post('kyc/:id', [KycController, 'updateKycStatus']).use(
   middleware.auth({
     guards: ['api'],
