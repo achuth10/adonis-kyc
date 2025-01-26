@@ -72,7 +72,10 @@ export default class KycService {
     const parsedPage = Number.parseInt(pageNumber)
     const offset = (parsedPage - 1) * parsedSize
 
-    const results = await db.rawQuery(`SELECT * FROM kycs LIMIT ${parsedSize} OFFSET ${offset}`)
+    const results = await db.rawQuery(`SELECT * FROM kycs LIMIT :size OFFSET :offset`, {
+      size: parsedSize,
+      offset: offset,
+    })
     return results[0]
   }
 }
