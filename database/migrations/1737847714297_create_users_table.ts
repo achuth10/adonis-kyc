@@ -12,6 +12,7 @@ export default class extends BaseSchema {
       table.enum('type', ['user', 'admin']).notNullable()
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').nullable()
+      table.index('full_name', 'idx_title')
     })
   }
 

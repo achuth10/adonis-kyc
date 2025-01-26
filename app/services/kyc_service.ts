@@ -66,16 +66,21 @@ export default class KycService {
 
   async getAll({ request }: HttpContext) {
     // Should actually be done with a cursor,
-    // Due to time contraint use limit/offset
-    const { pageSize = '10', pageNumber = '1' } = request.all()
+    // Due to time contraint using limit/offset
+    // Search against text should be done with a full text index
+    const { pageSize = '10', pageNumber = '1', search = null, order } = request.all()
+    const orderBy = order === 'ASC' ? 'ASC' : 'DESC'
     const parsedSize = Number.parseInt(pageSize)
     const parsedPage = Number.parseInt(pageNumber)
     const offset = (parsedPage - 1) * parsedSize
-
-    const results = await db.rawQuery(`SELECT * FROM kycs LIMIT :size OFFSET :offset`, {
-      size: parsedSize,
-      offset: offset,
-    })
-    return results[0]
+    const results = await db.rawQuery(
+      `SELECT kycs.*, users.full_name AS user_name FROM kycs JOIN users ON kycs.user_id = users.id ${search ? 'WHERE users.full_name LIKE :searchTerm' : ''} ORDER BY created_at ${orderBy} LIMIT :size OFFSET :offset`,
+      {
+        size: parsedSize,
+        offset: offset,
+        ...(search && { searchTerm: `%${search}%` }),
+      }
+    )
+    return results
   }
 }
