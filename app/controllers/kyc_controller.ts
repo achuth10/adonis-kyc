@@ -13,4 +13,8 @@ export default class KycController {
   async show({ params }: HttpContext) {}
   async update({ params, request }: HttpContext) {}
   async destroy({ params }: HttpContext) {}
+
+  async updateKycStatus(context: HttpContext) {
+    return this.kycService.updateKycStatus(context)
+  }
 }

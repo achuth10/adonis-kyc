@@ -32,3 +32,9 @@ router.get('/', async () => {
 router.post('users/login', [UsersController, 'login'])
 
 router.resource('kyc', KycController)
+
+router.post('kyc/:id', [KycController, 'updateKycStatus']).use(
+  middleware.auth({
+    guards: ['api'],
+  })
+)
