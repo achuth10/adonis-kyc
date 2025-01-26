@@ -17,7 +17,7 @@ export default class extends BaseSchema {
         .unique()
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at')
-      table.integer('approved_by').unsigned().references('id').inTable('users')
+      table.integer('changed_by').unsigned().references('id').inTable('users')
     })
   }
 

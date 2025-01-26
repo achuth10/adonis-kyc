@@ -25,6 +25,6 @@ export default class Kyc extends BaseModel {
   @column({ columnName: 'file_name' })
   declare fileName: string
 
-  @column({ columnName: 'approved_by' })
-  declare approvedBy: number
+  @column({ columnName: 'changed_by' })
+  declare changedBy: number
 }

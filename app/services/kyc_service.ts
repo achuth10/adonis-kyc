@@ -3,6 +3,7 @@ import Kyc from '#models/kyc'
 import { HttpContext } from '@adonisjs/core/http'
 import app from '@adonisjs/core/services/app'
 import { KycStatus, exludedFileTypes } from '../constants/Kyc.js'
+import db from '@adonisjs/lucid/services/db'
 
 export default class KycService {
   async createKyc({ request, response }: HttpContext) {
@@ -46,7 +47,20 @@ export default class KycService {
       return response.badRequest('Invalid KYC')
     }
     kyc.status = status
-    kyc.approvedBy = user.id
+    kyc.changedBy = user.id
     kyc.save()
+  }
+
+  async getDashboard({ response, auth }: HttpContext) {
+    const user = auth.user
+    if (user?.type !== 'admin') {
+      return response.unauthorized('You do not have the necessary permissions')
+    }
+    const results = await db.rawQuery(
+      'SELECT status, COUNT(*) AS total_count FROM kycs GROUP BY status'
+    )
+    const totalByStatus = results[0]
+    const allUsersCount = await db.rawQuery('SELECT COUNT(*) AS total FROM users')
+    return { totalByStatus, allUsersCount: allUsersCount[0] }
   }
 }
