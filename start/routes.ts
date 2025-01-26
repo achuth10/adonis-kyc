@@ -11,6 +11,7 @@ import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
 
 const UsersController = () => import('#controllers/users_controller')
+const KycController = () => import('#controllers/kyc_controller')
 
 router.resource('users', UsersController).use(
   '*',
@@ -25,5 +26,9 @@ router.get('/', async () => {
   }
 })
 
-// Temp route to issue tokens, not for actual use
-router.post('users/:id/tokens', [UsersController, 'issueToken'])
+// // Temp route to issue tokens, not for actual use
+// router.post('users/:id/tokens', [UsersController, 'issueToken'])
+
+router.post('users/login', [UsersController, 'login'])
+
+router.resource('kyc', KycController)

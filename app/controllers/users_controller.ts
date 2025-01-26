@@ -47,4 +47,8 @@ export default class UsersController {
       return token
     }
   }
+
+  async login({ request }: HttpContext) {
+    return this.usersService.loginUser(request.body())
+  }
 }

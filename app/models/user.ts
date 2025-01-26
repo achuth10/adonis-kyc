@@ -26,6 +26,9 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column()
   declare type: string
 
+  @column({ columnName: 'kyc_id' })
+  declare kycId: number
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 

@@ -14,9 +14,10 @@ export default class extends BaseSchema {
         .references('id')
         .inTable('users')
         .onDelete('CASCADE')
+        .unique()
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at')
-      table.integer('approved_by').notNullable().unsigned().references('id').inTable('users')
+      table.integer('approved_by').unsigned().references('id').inTable('users')
     })
   }
 
